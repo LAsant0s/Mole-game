@@ -1,7 +1,8 @@
 const $levels = {"easy": 3, "medium": 5, "hard": 7}; 
 const $imgWidth = 100; // mole's width 
 const $imgHeight = 80; // mole's height
-const $imgsTheme = { "default": "buraco.gif", "active": "toupeira.gif", "dead": "morreu.gif" }
+const $imgsTheme = { "default": "buraco.gif", "active": "toupeira.gif", "dead": "morreu.gif" };
+const $gameMoment = { "start": "beginning", "end": "ending" };
 const $initialTime = 10;
 var $timeGame = $initialTime; // Game time
 var $idChronoGame; // controls Chrono setInterval
@@ -12,22 +13,31 @@ $(document).ready(function() {
   fillBoard();
   $("#btnPlay").click(
     function(){
-      btnCtrl();
+      btnCtrl($gameMoment.start);
       $idChronoStartGame = setInterval(startGame, 1180);
       $idChronoGame = setInterval(startChronoGame, 1000);
     }
   );
 
-  $("#btnPause").click(function(){});
-  $("#btnStop").click(function(){});
-  $("#btnExit").click(function(){});
+  $("#btnPause").click(function(){
+    clearIntervals();
+    btnCtrl($gameMoment.end);
+  });
+  $("#btnStop").click(function(){
+    endGame();
+  });
+  $("#btnExit").click(function(){
+    window.location.replace("./login/index.html");
+  });
 
 });
 
-function btnCtrl() {
-  $("#btnPause").prop("disabled", false);
-  $("#btnStop").prop("disabled", false);
-  $("#btnPlay").prop("disabled", true);
+function btnCtrl(gameMoment) {
+  const isBegin = (gameMoment === $gameMoment.start) ? true : false; 
+
+  $("#btnPause").prop("disabled", !isBegin);
+  $("#btnStop").prop("disabled", !isBegin);
+  $("#btnPlay").prop("disabled", isBegin);
 }
 
 function startChronoGame() {
@@ -36,12 +46,12 @@ function startChronoGame() {
 }
 
 function endGame() {
-  clearInterval($idChronoStartGame);
-  clearInterval($idChronoGame);
-  alertWifi(`Fim de jogo. Sua pontuação foi ${$("#score").text()}`, false, 0, `img/${$imgsTheme.default}`, "50")
+  clearIntervals()
+  alertWifi(`Fim de jogo. Sua pontuação foi ${$("#score").text()}`, false, 0, `./img/${$imgsTheme.default}`, "50")
   $timeGame = $initialTime;
   $("#score").text("0");
   $("#chrono").text($timeGame);
+  btnCtrl($gameMoment.end);
 }
 
 // create board (box) according difficulty level
@@ -61,7 +71,7 @@ function placeBoardHoles($level) {
 
   for($i = 0; $i < Math.pow($level, 2); $i++){
     let $div = $("<div></div>"); 
-    let $img = $("<img>").attr({"src": `../img/${$imgsTheme.default}`, "id": `mole-${$i+1}`});
+    let $img = $("<img>").attr({"src": `./img/${$imgsTheme.default}`, "id": `mole-${$i+1}`});
     $($img).click(function(){updateScore(this)});
     $($div).append($img);
   
@@ -72,10 +82,15 @@ function placeBoardHoles($level) {
 function startGame() {
   const $level = getLevel(); 
   $randNumber = getRandomNumber(1, Math.pow($level, 2));
-  $(`#mole-${$randNumber}`).attr("src", `img/${$imgsTheme.active}`);
+  $(`#mole-${$randNumber}`).attr("src", `./img/${$imgsTheme.active}`);
   setTimeout(() => {
-    $(`#mole-${$randNumber}`).attr("src", `img/${$imgsTheme.default}`)
+    $(`#mole-${$randNumber}`).attr("src", `./img/${$imgsTheme.default}`)
   }, 1000);
+}
+
+function clearIntervals() {
+  clearInterval($idChronoStartGame);
+  clearInterval($idChronoGame);
 }
 
 // generate a random number between "min" e "max"
