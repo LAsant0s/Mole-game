@@ -1,0 +1,85 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Press Start 2P', cursive;
+}
+
+body {
+  background-color: green;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  border: 5px solid black;
+  width: 380px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 15px;
+  background-color: white;
+}
+
+.inputs {
+  text-align: center;
+  margin: 20px 0px; 
+}
+
+.inputs input {
+  padding: 5px;
+}
+
+.fields input {
+  border: none;
+  border-bottom: 2px solid orangered;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.fields input:focus {
+  border-bottom: 2px solid orange;
+}
+
+#btnLogin, #btnCadastro {
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 10px;
+  width: 300px;
+  border-radius: 10px;
+  background-color: orangered;
+  border-bottom: 6px solid rgb(187, 50, 0);
+  text-shadow: 0px 1.5px 0px rgba(0, 0, 0, 1);
+  cursor:pointer;
+}
+
+#btnLogin:active {
+  background-color: rgb(255, 107, 53);
+  border-bottom: none;
+}
+
+p {
+  font-size: 8px;
+}
+
+.register {
+  text-decoration: none;
+  color:orangered;
+}
+
+.register:link .register:active {
+  color:orangered;
+}
+
+.register:hover {
+  color:orange;
+}
+

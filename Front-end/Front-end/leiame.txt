@@ -1,0 +1,4 @@
+Resposável: Luan de Assis dos Santos
+Data: 27/04/2021
+Objetivo: 
+  - Implementar o cronometro do jogo e os botões Pause e Stop
