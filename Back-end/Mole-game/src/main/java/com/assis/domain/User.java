@@ -1,4 +1,4 @@
-package com.assis;
+package com.assis.domain;
 
 import java.io.Serializable;
 
