@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +20,9 @@ public class RankController {
 	@Autowired
 	private RankService service; 
 	
-	@GetMapping
-	public List<Rank> findAllAndSort() {
-		return service.findAllAndSort();
+	@GetMapping("/l={level}")
+	public List<Rank> findAllAndSort(@PathVariable String level) {
+		return service.findAllAndSort(level);
 	}
 	
 	@PostMapping("/saveRank")

@@ -45,8 +45,8 @@ public class RankService {
 		return null;
 	}
 	
-	public List<Rank> findAllAndSort() {
-		return repository.findAllAndSort();
+	public List<Rank> findAllAndSort(String level) {
+		return repository.findAllAndSort(level);
 	}
 	
 	
