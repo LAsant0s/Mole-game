@@ -9,25 +9,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.assis.domain.User;
-import com.assis.service.UserService;
+import com.assis.domain.Rank;
+import com.assis.service.RankService;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
-
+@RequestMapping("/rank")
+public class RankController {
+	
 	@Autowired
-	UserService service;
+	private RankService service; 
 	
 	@GetMapping
-	public List<User> allUsers() {
-		return service.allUsers();
+	public List<Rank> findAllAndSort() {
+		return service.findAllAndSort();
 	}
 	
-	@PostMapping("/newUser")
-	public User newUser(@RequestBody User user) {
-		return service.newUser(user);
+	@PostMapping("/saveRank")
+	public Rank SaveOrUpdateRank(@RequestBody Rank rank) {
+		return service.saveOrUpdateRank(rank);
 	}
-	
-	
+
 }
