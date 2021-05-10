@@ -23,6 +23,7 @@ $(document).ready(function() {
 
   $("#btnLevel").click(function() {
     $("#level-modal").css("display", "block");
+    $("#endgame").css("display", "none");
     $("#level-selection").css("display", "flex");
   });
 
@@ -123,7 +124,6 @@ function updateScore($img) {
 function saveScore() {
   const user = JSON.parse(localStorage.getItem('user'));
   const url = 'http://localhost:8080/rank/saveRank';
-  console.log('entrei')
 
   const level = $levelNumber[$currentLevel];
 
@@ -136,21 +136,23 @@ function saveScore() {
   axios.post(url, payload);
 }
 
-
 function createRank() {
+  let $tbody = $("#data-table");             
+  $tbody.empty();
+  
   const level = $levelNumber[$currentLevel];
   $.getJSON(`http://localhost:8080/rank/l=${level}`,         
   function ($ranks) {             
-    let $tbody = $("#data-table");             
     for ($i = 0; $i < $ranks.length; $i++) {                 
       $tbody.append($('<tr>')                 
         .append($('<td>').text($ranks[$i].score))                
         .append($('<td>').text($ranks[$i].user.user))                 
-        .append($('<td>').text($ranks[$i].level)));             
+        .append($('<td>').text($ranks[$i].level)));
       }         
     }); 
 
     $("#level-modal").css("display", "block");
+    $("#level-selection").css("display", "none");
     $("#endgame").css("display", "flex");
 
 }
