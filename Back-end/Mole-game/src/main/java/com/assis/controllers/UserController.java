@@ -13,7 +13,7 @@ import com.assis.domain.User;
 import com.assis.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
 	@Autowired

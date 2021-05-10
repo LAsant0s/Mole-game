@@ -14,7 +14,5 @@ public interface RankRepository extends JpaRepository<Rank, Integer> {
 
 	@Query(value = "select * from rank r where level = ? order by r.score desc limit 5", nativeQuery = true)
 	List<Rank> findAllAndSort(String level);
-	
-	
-	
+
 }

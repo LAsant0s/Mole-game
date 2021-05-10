@@ -7,33 +7,51 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="./js/game.js"></script>
     <script src="./js/jAlertWifi.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/tabuleiro.css">
     <link rel="stylesheet" href="./css/jAlertWifi.css">
     <title>Game</title>
   </head>
   <body>
-    <header>
-      <p>Tempo: 00:<span id="chrono">10</span></p>
-      <p>Pontuação: <span id="score">0</span></p>
-    </header>
     <main>
-      <section>
+      <div class="game-info">
+        <p>Tempo: 00:<span id="chrono">10</span></p>
+        <p>Pontuação: <span id="score">0</span></p>
+      </div>
+      <section class="board-section">
         <div id="board"></div>
+      </section>
+      <section id="level-modal">
+        <div class="backdrop"></div>
+        <div class="content">
+          <div class="endgame" id="endgame">
+            <p>Fim de Jogo!</p>
+            <p>Ranking</p>
+            <table>
+              <thead>
+                <th>Pontuação</th>
+                <th>Usuário</th>
+                <th>level</th>
+              </thead>
+              <tbody id="data-table"></tbody>
+            </table>
+          </div>
+          <div class="level-selection" id="level-selection">
+            <button onclick="selectLevel('easy')">Fácil</button>
+            <button onclick="selectLevel('medium')">Médio</button>
+            <button onclick="selectLevel('hard')">Difícil</button>
+          </div>
+        </div>
       </section>
     </main>
     <footer>
-      <label for="level">
-        Nível:
-      </label>
-      <select name="" id="level" onchange="fillBoard()">
-        <option value="easy">Fácil</option>
-        <option value="medium" selected>Médio</option>
-        <option value="hard">Difícil</option>
-      </select>
+      <button id="btnLevel">Nível</button>
       <button id="btnPlay">Play</button>
       <button id="btnPause" disabled>Pause</button>
       <button id="btnStop" disabled>Stop</button>
       <button id="btnExit">Exit</button>
     </footer>
   </body>
+
 </html>

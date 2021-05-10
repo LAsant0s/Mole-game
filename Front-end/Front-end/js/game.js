@@ -1,4 +1,5 @@
 const $levels = {"easy": 3, "medium": 5, "hard": 7}; 
+const $levelNumber = { 3: 'easy', 5: 'medium', 7: 'hard' };
 const $imgWidth = 100; // mole's width 
 const $imgHeight = 80; // mole's height
 const $imgsTheme = { "default": "buraco.gif", "active": "toupeira.gif", "dead": "morreu.gif" };
@@ -7,6 +8,7 @@ const $initialTime = 10;
 var $timeGame = $initialTime; // Game time
 var $idChronoGame; // controls Chrono setInterval
 var $idChronoStartGame;
+var $currentLevel = $levels['medium']; 
 
 $(document).ready(function() {
   $("#chrono").text($timeGame);
@@ -18,6 +20,11 @@ $(document).ready(function() {
       $idChronoGame = setInterval(startChronoGame, 1000);
     }
   );
+
+  $("#btnLevel").click(function() {
+    $("#level-modal").css("display", "block");
+    $("#level-selection").css("display", "flex");
+  });
 
   $("#btnPause").click(function(){
     clearIntervals();
@@ -47,16 +54,24 @@ function startChronoGame() {
 
 function endGame() {
   clearIntervals()
-  alertWifi(`Fim de jogo. Sua pontuação foi ${$("#score").text()}`, false, 0, `./img/${$imgsTheme.default}`, "50")
+  saveScore();
+  createRank();
+  // alertWifi(`Fim de jogo. Sua pontuação foi ${$("#score").text()}`, false, 0, `./img/${$imgsTheme.default}`, "50")
   $timeGame = $initialTime;
   $("#score").text("0");
   $("#chrono").text($timeGame);
   btnCtrl($gameMoment.end);
 }
 
+function selectLevel(level) {
+  $("#level-modal").css("display", "none");
+  $currentLevel = $levels[level];
+  fillBoard()
+}
+
 // create board (box) according difficulty level
 function fillBoard() {
-  const $level = getLevel(); 
+  const $level = $currentLevel; 
   let $boardWidth = $imgWidth * $level; 
   let $boardHeight = $imgHeight * $level; 
 
@@ -80,7 +95,7 @@ function placeBoardHoles($level) {
 }
 
 function startGame() {
-  const $level = getLevel(); 
+  const $level = $currentLevel; 
   $randNumber = getRandomNumber(1, Math.pow($level, 2));
   $(`#mole-${$randNumber}`).attr("src", `./img/${$imgsTheme.active}`);
   setTimeout(() => {
@@ -98,14 +113,45 @@ function getRandomNumber(min, max) {
   return Math.round((Math.random() * Math.abs(max - min)) + min);
 }
 
-// returns the number corresponding to the difficulty level
-function getLevel() {
-  return $levels[$("#level").val()]; 
-}
-
 function updateScore($img) {
   if($($img).attr("src").search($imgsTheme.active) != -1) {
     $("#score").html(Number($("#score").text())+1);
     $($img).attr("src", `img/${$imgsTheme.dead}`)
   }
 }
+
+function saveScore() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const url = 'http://localhost:8080/rank/saveRank';
+  console.log('entrei')
+
+  const level = $levelNumber[$currentLevel];
+
+  const payload = {
+    score: $("#score").text(),
+    level,
+    user
+  }
+
+  axios.post(url, payload);
+}
+
+
+function createRank() {
+  const level = $levelNumber[$currentLevel];
+  $.getJSON(`http://localhost:8080/rank/l=${level}`,         
+  function ($ranks) {             
+    let $tbody = $("#data-table");             
+    for ($i = 0; $i < $ranks.length; $i++) {                 
+      $tbody.append($('<tr>')                 
+        .append($('<td>').text($ranks[$i].score))                
+        .append($('<td>').text($ranks[$i].user.user))                 
+        .append($('<td>').text($ranks[$i].level)));             
+      }         
+    }); 
+
+    $("#level-modal").css("display", "block");
+    $("#endgame").css("display", "flex");
+
+}
+ 

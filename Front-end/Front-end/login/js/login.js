@@ -4,8 +4,11 @@ $(document).ready(function() {
     let $pwd = $("#pwd").val();
     if($user && $pwd) {
       $.getJSON("http://localhost:8080/users", function( $registros ) {
-        if($registros.filter($usuario => $usuario.user === $user && $usuario.pwd === $pwd).length > 0)
+        const user = $registros.find($usuario => $usuario.user === $user && $usuario.pwd === $pwd);
+        if(user) {
+          localStorage.setItem('user', JSON.stringify(user));
           window.location.replace("../index.html");
+        }
         else 
           alert("Usuário inválido")
       });
