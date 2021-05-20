@@ -23,11 +23,10 @@ public class UserController {
 	public List<User> allUsers() {
 		return service.allUsers();
 	}
-	
+	 
 	@PostMapping("/newUser")
 	public User newUser(@RequestBody User user) {
 		return service.newUser(user);
 	}
-	
-	
+
 }

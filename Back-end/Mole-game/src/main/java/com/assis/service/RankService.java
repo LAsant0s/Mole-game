@@ -25,7 +25,7 @@ public class RankService {
 		}
 		
 		if(newRank.getScore() <= rank.getScore()) {
-			throw new LowerScoreException("Score antigo: " + rank.getScore());
+			throw new LowerScoreException("Você não atingiu sua pontuação! Pontuação antiga: " + rank.getScore());
 		}
 		
 		rank.setScore(newRank.getScore());
@@ -49,5 +49,8 @@ public class RankService {
 		return repository.findAllAndSort(level);
 	}
 	
+	public List<Rank> findTop5ByOrderByScoreDesc() {
+		return repository.findTop5ByOrderByScoreDesc();
+	}
 	
 }

@@ -29,5 +29,10 @@ public class RankController {
 	public Rank SaveOrUpdateRank(@RequestBody Rank rank) {
 		return service.saveOrUpdateRank(rank);
 	}
-
+	
+	@GetMapping("/topRanks")
+	public List<Rank> findTop5ByOrderByScoreDesc() {
+		return service.findTop5ByOrderByScoreDesc();
+	}
+	
 }
