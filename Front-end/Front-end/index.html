@@ -9,6 +9,7 @@
     <script src="./js/jAlertWifi.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/tabuleiro.css">
     <link rel="stylesheet" href="./css/jAlertWifi.css">
     <title>Game</title>
@@ -26,18 +27,22 @@
         <div class="backdrop"></div>
         <div class="content">
           <div class="endgame" id="endgame">
-            <p>Fim de Jogo!</p>
+            <p>Fim de Jogo! Sua pontuação foi <span id="player-score"></span></p>
+            <span id="saveRankError"></span>
             <p>Ranking</p>
-            <table>
-              <thead>
-                <th>Pontuação</th>
-                <th>Usuário</th>
-                <th>level</th>
+            <table class="table">
+              <thead class="">
+                <tr class="bg-warning">
+                  <th>Pontuação</th>
+                  <th>Usuário</th>
+                  <th>level</th>
+                </tr>
               </thead>
               <tbody id="data-table"></tbody>
             </table>
           </div>
           <div class="level-selection" id="level-selection">
+            <p>Selecione a dificuldade:</p>
             <button onclick="selectLevel('easy')">Fácil</button>
             <button onclick="selectLevel('medium')">Médio</button>
             <button onclick="selectLevel('hard')">Difícil</button>

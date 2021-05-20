@@ -83,3 +83,18 @@ p {
   color:orange;
 }
 
+.registered {
+  color: green;
+  display: none;
+}
+
+.userExists {
+  color: red;
+  display: none;
+}
+
+.blankUser {
+  color: red;
+  display: none;
+}
+

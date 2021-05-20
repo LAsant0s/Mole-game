@@ -9,11 +9,14 @@ $(document).ready(function() {
           localStorage.setItem('user', JSON.stringify(user));
           window.location.replace("../index.html");
         }
-        else 
-          alert("Usuário inválido")
+        else {
+          $(".blankUser").css("display", "none");
+          $(".userExists").css("display", "block");
+        }
       });
     }
     else  
-      alert("Erro: Favor informar o usuário e senha");
+    $(".blankUser").css("display", "block");
+    $(".userExists").css("display", "none");
   })
 });

@@ -5,6 +5,7 @@ const $imgHeight = 80; // mole's height
 const $imgsTheme = { "default": "buraco.gif", "active": "toupeira.gif", "dead": "morreu.gif" };
 const $gameMoment = { "start": "beginning", "end": "ending" };
 const $initialTime = 10;
+let $saveRankError; 
 var $timeGame = $initialTime; // Game time
 var $idChronoGame; // controls Chrono setInterval
 var $idChronoStartGame;
@@ -37,6 +38,11 @@ $(document).ready(function() {
   $("#btnExit").click(function(){
     window.location.replace("./login/index.html");
   });
+  $(".backdrop").click(function() {
+    $("#level-modal").css("display", "none");
+    $("#endgame").css("display", "none");
+    $("#level-selection").css("display", "none");
+  }); 
 
 });
 
@@ -50,15 +56,25 @@ function btnCtrl(gameMoment) {
 
 function startChronoGame() {
   let $secondsFormat = (--$timeGame).toLocaleString("pt-br", {minimumIntegerDigits: 2});
+  if($timeGame < 5){
+    timerNearEnd()
+  }
   ($timeGame >= 0)?$("#chrono").text($secondsFormat):endGame();
 }
 
 function endGame() {
+  $("#chrono").css("animation", "");
   clearIntervals()
   saveScore();
-  createRank();
-  // alertWifi(`Fim de jogo. Sua pontuação foi ${$("#score").text()}`, false, 0, `./img/${$imgsTheme.default}`, "50")
+}
+
+function saveRankError() {
+  if ($saveRankError) {
+    $("#saveRankError").text($saveRankError);
+  } 
+
   $timeGame = $initialTime;
+  createRank();
   $("#score").text("0");
   $("#chrono").text($timeGame);
   btnCtrl($gameMoment.end);
@@ -88,6 +104,7 @@ function placeBoardHoles($level) {
   for($i = 0; $i < Math.pow($level, 2); $i++){
     let $div = $("<div></div>"); 
     let $img = $("<img>").attr({"src": `./img/${$imgsTheme.default}`, "id": `mole-${$i+1}`});
+    $img.attr('draggable', false);
     $($img).click(function(){updateScore(this)});
     $($div).append($img);
   
@@ -133,10 +150,19 @@ function saveScore() {
     user
   }
 
-  axios.post(url, payload);
+  axios.post(url, payload)
+    .then(s => { return saveRankError() })
+    .catch(e => {
+      if(e.response) {
+        const { data } = e.response;
+        $saveRankError = data;
+      }
+      return saveRankError();
+    });
 }
 
 function createRank() {
+  $("#player-score").html($("#score").text())
   let $tbody = $("#data-table");             
   $tbody.empty();
   
@@ -150,10 +176,16 @@ function createRank() {
         .append($('<td>').text($ranks[$i].level)));
       }         
     }); 
-
     $("#level-modal").css("display", "block");
     $("#level-selection").css("display", "none");
     $("#endgame").css("display", "flex");
-
 }
  
+function timerNearEnd() {
+  $("#chrono").css("animation", "timer 1s ease infinite");
+} 
+
+// async function service(url, payload) {
+//   const response = await axios.post(url, payload);
+//   return response;
+// }
